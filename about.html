@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="theme-color" content="#1a4a6e" />
+  <title>关于我们 · 小秘密</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: linear-gradient(180deg, rgba(26,74,110,0.55) 0%, rgba(10,25,41,0.65) 100%), url('images/bg.jpg') center/cover no-repeat;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      padding: 24px 20px 48px;
+      padding-left: max(20px, env(safe-area-inset-left));
+      padding-right: max(20px, env(safe-area-inset-right));
+      padding-bottom: max(48px, env(safe-area-inset-bottom));
+      overflow-x: hidden;
+    }
+    .back {
+      display: inline-block;
+      margin-bottom: 24px;
+      padding: 6px 0;
+      color: #81d4fa;
+      text-decoration: none;
+      font-size: 30px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .page {
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+      opacity: 0;
+      animation: fadeIn 0.6s ease forwards;
+    }
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    .card {
+      background: rgba(129,212,250,0.08);
+      border: 1px solid rgba(129,212,250,0.28);
+      border-radius: 18px;
+      padding: 24px 22px;
+      margin-bottom: 14px;
+    }
+    .card-title {
+      font-size: 26px;
+      color: #81d4fa;
+      margin-bottom: 10px;
+      letter-spacing: 0.06em;
+    }
+    .card-value {
+      font-size: 32px;
+      color: #81d4fa;
+      font-weight: 500;
+    }
+    .secret {
+      text-align: center;
+      padding: 28px 20px;
+      margin-top: 20px;
+    }
+    .secret p {
+      font-size: 30px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.85);
+    }
+    .secret .heart {
+      display: inline-block;
+      margin-top: 16px;
+      font-size: 56px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      transition: transform 0.2s;
+    }
+    .secret .heart:active { transform: scale(1.2); }
+    .footer { text-align: center; margin-top: 28px; font-size: 24px; color: #81d4fa; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a href="index.html" class="back">← 返回首页</a>
+    <div class="card">
+      <div class="card-title">在一起的日子</div>
+      <div class="card-value" id="startDate">2023-03-22</div>
+    </div>
+    <div class="card">
+      <div class="card-title">专属昵称</div>
+      <div class="card-value">八嘎猫/小公主</div>
+    </div>
+    <div class="card">
+      <div class="card-title">我们的宠物</div>
+      <div class="card-value">棉棉和dollar</div>
+    </div>
+    <div class="card">
+      <div class="card-title">我们的进展</div>
+      <div class="card-value">已经互见家长，可以随便去对方家里咯~</div>
+    </div>
+    <div class="card">
+      <div class="card-title">小站名字</div>
+      <div class="card-value">只为你而做 💕</div>
+    </div>
+    <div class="secret">
+      <p>这里是我们的小秘密基地，</p>
+      <p>点一下试试？</p>
+      <span class="heart" id="heart" title="点我">💙</span>
+    </div>
+    <div class="footer">只为你而做 💕</div>
+  </div>
+  <script>
+    document.getElementById('startDate').textContent = '2023年3月22日';
+    var heart = document.getElementById('heart');
+    var emojis = ['💙', '💕', '💗', '❤️', '💙'];
+    var i = 0;
+    heart.onclick = function() {
+      i = (i + 1) % emojis.length;
+      heart.textContent = emojis[i];
+    };
+  </script>
+</body>
+</html>

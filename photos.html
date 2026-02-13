@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="theme-color" content="#1a4a6e" />
+  <title>照片墙 · 一起的瞬间</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: linear-gradient(180deg, rgba(26,74,110,0.55) 0%, rgba(10,25,41,0.65) 100%), url('images/bg.jpg') center/cover no-repeat;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      padding: 24px 20px 48px;
+      padding-left: max(20px, env(safe-area-inset-left));
+      padding-right: max(20px, env(safe-area-inset-right));
+      padding-bottom: max(48px, env(safe-area-inset-bottom));
+      overflow-x: hidden;
+    }
+    .back {
+      display: inline-block;
+      margin-bottom: 24px;
+      padding: 6px 0;
+      color: #81d4fa;
+      text-decoration: none;
+      font-size: 30px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .page { width: 100%; max-width: 420px; margin: 0 auto;
+      opacity: 0;
+      animation: fadeIn 0.6s ease forwards;
+    }
+    .page-photos { max-width: none; width: 100%; }
+    body.photos-page { padding-left: max(8px, env(safe-area-inset-left)); padding-right: max(8px, env(safe-area-inset-right)); }
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .grid-item {
+      aspect-ratio: 1;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(129,212,250,0.25);
+      background: rgba(129,212,250,0.06);
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .grid-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(0,0,0,0.92);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      padding-left: max(20px, env(safe-area-inset-left));
+      padding-right: max(20px, env(safe-area-inset-right));
+    }
+    .lightbox.show { display: flex; }
+    .lightbox img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: max(20px, env(safe-area-inset-top));
+      right: max(20px, env(safe-area-inset-right));
+      width: 56px;
+      height: 56px;
+      border: none;
+      background: rgba(255,255,255,0.15);
+      color: #81d4fa;
+      font-size: 48px;
+      border-radius: 50%;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .photo-desc { text-align: center; margin-top: 20px; font-size: 24px; color: rgba(255,255,255,0.85); }
+    .footer { text-align: center; margin-top: 20px; font-size: 24px; color: #81d4fa; }
+  </style>
+</head>
+<body class="photos-page">
+  <div class="page page-photos">
+    <a href="index.html" class="back">← 返回首页</a>
+    <div class="grid" id="photoGrid"></div>
+    <p class="photo-desc">记录那些我们一起经历的美好瞬间~</p>
+    <div class="footer">只为你而做 💕</div>
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <button type="button" class="lightbox-close" id="lightboxClose" aria-label="关闭">×</button>
+    <img src="" alt="" id="lightboxImg">
+  </div>
+
+  <script>
+    var PHOTOS = [
+      'images/pictures/460a22112f345ab01568caa3f23f11fc.jpg',
+      'images/pictures/aec9b5dedd826b83dcf9e27167b0ea87.jpg',
+      'images/pictures/b7219b44dac5b5bdd7da503468ea2aa8.jpg',
+      'images/pictures/7d8f518bc497af864003fc2072dbb99a.jpg',
+      'images/pictures/2b44de9c4807c7c03f58a5d3b0612d16.jpg',
+      'images/pictures/becc6ada6544dd5051bbb439d60fce98.jpg',
+      'images/pictures/b98bb51599174bd2286c5b88a35f79b3.jpg',
+      'images/pictures/2ce9c58dc8b62b54bfadd4d1019671f4.jpg',
+      'images/pictures/3f4cc657b9c293b6597e941295daf1d9.jpg'
+    ];
+
+    var grid = document.getElementById('photoGrid');
+    var lb = document.getElementById('lightbox');
+    var lbImg = document.getElementById('lightboxImg');
+    var lbClose = document.getElementById('lightboxClose');
+
+    PHOTOS.forEach(function(src) {
+      var wrap = document.createElement('div');
+      wrap.className = 'grid-item';
+      var img = document.createElement('img');
+      img.src = src;
+      img.alt = '';
+      img.loading = 'lazy';
+      img.onerror = function() {
+        wrap.style.background = 'rgba(129,212,250,0.1)';
+        wrap.innerHTML = '<span style="display:flex;align-items:center;justify-content:center;height:100%;color:rgba(255,255,255,0.4);font-size:24px;">暂无图</span>';
+      };
+      wrap.appendChild(img);
+      wrap.onclick = function() {
+        if (img.complete && img.naturalWidth) {
+          lbImg.src = src;
+          lb.classList.add('show');
+          document.body.style.overflow = 'hidden';
+        }
+      };
+      grid.appendChild(wrap);
+    });
+
+    function closeLightbox() {
+      lb.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+    lbClose.onclick = closeLightbox;
+    lb.onclick = function(e) {
+      if (e.target === lb) closeLightbox();
+    };
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  </script>
+</body>
+</html>

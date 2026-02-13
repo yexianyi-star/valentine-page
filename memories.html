@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="theme-color" content="#1a4a6e" />
+  <title>我们的回忆 · 时间线与故事</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: linear-gradient(180deg, rgba(26,74,110,0.55) 0%, rgba(10,25,41,0.65) 100%), url('images/bg.jpg') center/cover no-repeat;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      padding: 24px 20px 48px;
+      padding-left: max(20px, env(safe-area-inset-left));
+      padding-right: max(20px, env(safe-area-inset-right));
+      padding-bottom: max(48px, env(safe-area-inset-bottom));
+      overflow-x: hidden;
+    }
+    .back {
+      display: inline-block;
+      margin-bottom: 24px;
+      padding: 6px 0;
+      color: #81d4fa;
+      text-decoration: none;
+      font-size: 30px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .page {
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+      opacity: 0;
+      animation: fadeIn 0.6s ease forwards;
+    }
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    .timeline {
+      position: relative;
+      padding-left: 36px;
+      border-left: 2px solid rgba(129,212,250,0.3);
+      margin-left: 12px;
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 28px;
+      padding-bottom: 4px;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -40px;
+      top: 8px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #4fc3f7;
+      box-shadow: 0 0 0 3px rgba(79,195,247,0.3);
+    }
+    .timeline-date {
+      font-size: 24px;
+      color: #81d4fa;
+      margin-bottom: 6px;
+      letter-spacing: 0.04em;
+    }
+    .timeline-title {
+      font-size: 32px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .timeline-desc {
+      font-size: 28px;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.55;
+    }
+    .timeline-img {
+      margin-top: 12px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(129,212,250,0.25);
+      max-width: 100%;
+    }
+    .timeline-img img {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: rgba(129,212,250,0.06);
+    }
+    .footer { text-align: center; margin-top: 32px; font-size: 24px; color: #81d4fa; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a href="index.html" class="back">← 返回首页</a>
+    <div class="timeline" id="timeline"></div>
+    <div class="footer">只为你而做 💕</div>
+  </div>
+  <script>
+    var MEMORIES = [
+      { date: '2023-03-22', title: '我们在一起', desc: '从这一天起，故事有了我们~', img: '' },
+      { date: '2024-01-01', title: '第一次跨年', desc: '在新年的钟声里，许下和你有关于未来的愿望~', img: '' },
+      { date: '2024-02-14', title: '第一个情人节', desc: '精心布置的烛光晚餐，成为了我们美好的回忆~', img: '' },
+      { date: '2024-05-11', title: '第一次养猫', desc: '一个新的生命加入了我们的生活，名为棉棉，意为像棉花一样，温暖着这个家~', img: '' },
+      { date: '2025-01-05', title: '第一次DIY', desc: '那天我们在戒指上刻下了对方的名字，并赠与了对方，我们的联系紧密了一分~', img: '' },
+      { date: '2025-01-06', title: '第一次给你过生日', desc: '一大箱的礼物承载了我对你满满的爱，黄金手链与你更是绝配~', img: '' },
+      { date: '2025-03-02', title: '第一次承诺', desc: '你为我签署了钟爱协议，那是一个浪漫而感动的瞬间~', img: '' },
+      { date: '2026-02-14', title: '我们的第一个网页', desc: '只为你而做的小站，记录我们的点滴~', img: '' }
+    ];
+
+    var container = document.getElementById('timeline');
+    MEMORIES.forEach(function(m) {
+      var div = document.createElement('div');
+      div.className = 'timeline-item';
+      var html = '<div class="timeline-date">' + m.date + '</div><div class="timeline-title">' + m.title + '</div><div class="timeline-desc">' + m.desc + '</div>';
+      if (m.img) {
+        html += '<div class="timeline-img"><img src="' + m.img + '" alt="" loading="lazy" onerror="this.parentNode.style.display=\'none\'"></div>';
+      }
+      div.innerHTML = html;
+      container.appendChild(div);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="theme-color" content="#1a4a6e" />
+  <title>心愿清单 · 想和你做的事</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: linear-gradient(180deg, rgba(26,74,110,0.55) 0%, rgba(10,25,41,0.65) 100%), url('images/bg.jpg') center/cover no-repeat;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      padding: 24px 20px 48px;
+      padding-left: max(20px, env(safe-area-inset-left));
+      padding-right: max(20px, env(safe-area-inset-right));
+      padding-bottom: max(48px, env(safe-area-inset-bottom));
+      overflow-x: hidden;
+    }
+    .back {
+      display: inline-block;
+      margin-bottom: 24px;
+      padding: 6px 0;
+      color: #81d4fa;
+      text-decoration: none;
+      font-size: 30px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .page {
+      width: 100%;
+      max-width: 560px;
+      margin: 0 auto;
+      opacity: 0;
+      animation: fadeIn 0.6s ease forwards;
+    }
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    .intro {
+      font-size: 28px;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    @media (min-width: 500px) {
+      .list { grid-template-columns: repeat(3, 1fr); }
+    }
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      background: rgba(129,212,250,0.08);
+      border: 1px solid rgba(129,212,250,0.28);
+      border-radius: 12px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.2s;
+    }
+    .item:hover { background: rgba(129,212,250,0.12); }
+    .item input {
+      width: 36px;
+      height: 36px;
+      accent-color: #4fc3f7;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .item label {
+      flex: 1;
+      font-size: 24px;
+      color: rgba(255,255,255,0.95);
+      cursor: pointer;
+      user-select: none;
+    }
+    .item.done label {
+      color: rgba(255,255,255,0.55);
+      text-decoration: line-through;
+    }
+    .footer { text-align: center; margin-top: 28px; font-size: 24px; color: #81d4fa; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a href="index.html" class="back">← 返回首页</a>
+    <p class="intro">想和你一起完成的99件小事，勾选过的会帮你记住哦～</p>
+    <div class="list" id="wishList"></div>
+    <div class="footer">只为你而做 💕</div>
+  </div>
+  <script>
+    const STORAGE_KEY = 'valentine_wishlist';
+    const DEFAULT_ITEMS = [
+      '一起看一场日出',
+      '一起看一场日落',
+      '一起去海边散步',
+      '一起做一顿饭',
+      '一起看一场演唱会',
+      '一起旅行一次',
+      '一起养一只小动物',
+      '一起看星星',
+      '一起堆雪人',
+      '一起写一封给未来的信',
+      '一起看一场电影',
+      '一起逛超市买菜',
+      '一起做早餐',
+      '一起做晚餐',
+      '一起洗碗',
+      '一起打扫房间',
+      '一起整理照片',
+      '一起听音乐',
+      '一起跳舞',
+      '一起唱歌',
+      '一起看烟花',
+      '一起放孔明灯',
+      '一起坐摩天轮',
+      '一起坐旋转木马',
+      '一起坐过山车',
+      '一起去游乐园',
+      '一起去动物园',
+      '一起去水族馆',
+      '一起去博物馆',
+      '一起去图书馆',
+      '一起逛书店',
+      '一起喝咖啡',
+      '一起喝茶',
+      '一起喝酒',
+      '一起看球赛',
+      '一起打游戏',
+      '一起拼图',
+      '一起做手工',
+      '一起画画',
+      '一起写日记',
+      '一起读一本书',
+      '一起看剧',
+      '一起追剧',
+      '一起看综艺',
+      '一起看纪录片',
+      '一起听播客',
+      '一起做运动',
+      '一起跑步',
+      '一起散步',
+      '一起爬山',
+      '一起骑自行车',
+      '一起游泳',
+      '一起做瑜伽',
+      '一起打羽毛球',
+      '一起打乒乓球',
+      '一起打篮球',
+      '一起踢足球',
+      '一起放风筝',
+      '一起野餐',
+      '一起露营',
+      '一起看极光',
+      '一起看流星雨',
+      '一起数星星',
+      '一起看月亮',
+      '一起赏花',
+      '一起看樱花',
+      '一起看枫叶',
+      '一起看雪景',
+      '一起打雪仗',
+      '一起滑冰',
+      '一起滑雪',
+      '一起泡温泉',
+      '一起做SPA',
+      '一起做按摩',
+      '一起剪头发',
+      '一起做美甲',
+      '一起逛街',
+      '一起买衣服',
+      '一起试衣服',
+      '一起拍照',
+      '一起拍写真',
+      '一起拍视频',
+      '一起做vlog',
+      '一起做蛋糕',
+      '一起做甜品',
+      '一起包饺子',
+      '一起包粽子',
+      '一起做月饼',
+      '一起过生日',
+      '一起过情人节',
+      '一起吹蜡烛',
+      '一起切蛋糕',
+      '一起开香槟',
+      '一起倒计时',
+      '一起跨年',
+      '一起守岁',
+      '一起看春晚',
+      '一起贴春联',
+      '一起包红包'
+    ];
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const arr = JSON.parse(raw);
+          if (Array.isArray(arr) && arr.length === DEFAULT_ITEMS.length) return arr;
+        }
+      } catch (e) {}
+      return DEFAULT_ITEMS.map(function() { return false; });
+    }
+
+    function saveState(checked) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(checked)); } catch (e) {}
+    }
+
+    const checked = loadState();
+    const container = document.getElementById('wishList');
+
+    DEFAULT_ITEMS.forEach(function(text, i) {
+      var div = document.createElement('div');
+      div.className = 'item' + (checked[i] ? ' done' : '');
+      div.innerHTML = '<input type="checkbox" id="w' + i + '" ' + (checked[i] ? 'checked' : '') + '><label for="w' + i + '">' + (i + 1) + '-' + text + '</label>';
+      div.querySelector('input').onchange = function() {
+        checked[i] = this.checked;
+        div.classList.toggle('done', checked[i]);
+        saveState(checked);
+      };
+      container.appendChild(div);
+    });
+  </script>
+</body>
+</html>

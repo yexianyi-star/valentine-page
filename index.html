@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="theme-color" content="#1a4a6e" />
+  <title>只为你而做 💕</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: linear-gradient(180deg, rgba(26,74,110,0.55) 0%, rgba(10,25,41,0.65) 100%), url('images/bg.jpg') center/cover no-repeat;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      padding: 24px 20px 40px;
+      padding-left: max(20px, env(safe-area-inset-left));
+      padding-right: max(20px, env(safe-area-inset-right));
+      padding-bottom: max(40px, env(safe-area-inset-bottom));
+      overflow-x: hidden;
+    }
+    .page {
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+      min-height: calc(100vh - 48px);
+      min-height: calc(100dvh - 48px);
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      animation: fadeIn 0.6s ease forwards;
+    }
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    .title {
+      text-align: center;
+      font-size: 44px;
+      font-weight: 600;
+      color: #81d4fa;
+      margin-bottom: 28px;
+      margin-top: 8px;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      flex: 1;
+      align-content: start;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 108px;
+      text-decoration: none;
+      color: inherit;
+      background: rgba(129,212,250,0.08);
+      border: 1px solid rgba(129,212,250,0.28);
+      border-radius: 18px;
+      padding: 18px 14px;
+      transition: background 0.2s, transform 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .card:active { transform: scale(0.98); }
+    .card:hover { background: rgba(129,212,250,0.14); }
+    .card-icon { font-size: 60px; margin-bottom: 10px; line-height: 1; }
+    .card-title { font-size: 32px; font-weight: 600; color: #fff; margin-bottom: 6px; }
+    .card-desc { font-size: 24px; color: rgba(255,255,255,0.6); line-height: 1.4; }
+
+    .card.disabled {
+      opacity: 0.65;
+      pointer-events: none;
+    }
+    .card.disabled .card-desc { color: rgba(255,255,255,0.4); }
+    .card.disabled .card-desc::after { content: ' · 敬请期待'; }
+
+    .footer {
+      text-align: center;
+      margin-top: 28px;
+      padding-top: 12px;
+      font-size: 24px;
+      color: #81d4fa;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1 class="title">只为你而做 💕</h1>
+
+    <div class="grid">
+      <a href="love-days.html" class="card">
+        <span class="card-icon">📅</span>
+        <span class="card-title">纪念日</span>
+        <span class="card-desc">纪念日天数</span>
+      </a>
+
+      <a href="memories.html" class="card">
+        <span class="card-icon">📷</span>
+        <span class="card-title">我们的回忆</span>
+        <span class="card-desc">时间线与故事</span>
+      </a>
+
+      <a href="photos.html" class="card">
+        <span class="card-icon">🖼️</span>
+        <span class="card-title">照片墙</span>
+        <span class="card-desc">一起的瞬间</span>
+      </a>
+
+      <a href="wishlist.html" class="card">
+        <span class="card-icon">💝</span>
+        <span class="card-title">心愿清单</span>
+        <span class="card-desc">想和你做的事</span>
+      </a>
+
+      <a href="quotes.html" class="card">
+        <span class="card-icon">💬</span>
+        <span class="card-title">情话本</span>
+        <span class="card-desc">想说给你的话</span>
+      </a>
+
+      <a href="message.html" class="card">
+        <span class="card-icon">✉️</span>
+        <span class="card-title">留言</span>
+        <span class="card-desc">写给你</span>
+      </a>
+
+      <a href="about.html" class="card">
+        <span class="card-icon">🌙</span>
+        <span class="card-title">关于我们</span>
+        <span class="card-desc">小秘密</span>
+      </a>
+    </div>
+
+    <div class="footer">只为你而做 💕</div>
+  </div>
+</body>
+</html>
